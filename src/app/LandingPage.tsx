@@ -197,6 +197,78 @@ function CircleDoodle({ size = 44, color = clr.sage, style }: { size?: number; c
   )
 }
 
+/* ── Animated brushstroke frame around the entire Hero ──
+   Uses Framer Motion pathLength: 0→1 (handles dasharray/dashoffset).
+   3 layered paths — sage (thick/back), mint (mid), lavender (thin/front).
+   The path is intentionally hand-drawn: each edge has a slight curve
+   so it looks painted, not geometric. viewBox matches 1400×960 aspect. */
+function HeroFrame() {
+  // Organic hand-drawn closed path — slight wobble on each edge
+  const d = [
+    "M 55,45",
+    "C 280,22  700,18  980,28",
+    "C 1120,33 1270,38 1345,55",
+    "C 1368,65 1372,120 1365,260",
+    "C 1360,420 1368,620 1355,780",
+    "C 1348,870 1340,910 1310,930",
+    "C 1150,948  760,952  420,946",
+    "C 230,943  90,938   45,918",
+    "C 22,908   16,860   18,720",
+    "C 20,560   14,330   55,45",
+    "Z",
+  ].join(" ")
+
+  const common = {
+    d,
+    fill: "none",
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+  }
+
+  return (
+    <svg
+      viewBox="0 0 1400 960"
+      preserveAspectRatio="none"
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: 1,
+      }}
+    >
+      {/* Layer 1 — sage, thick, faint — draws first */}
+      <motion.path
+        {...common}
+        stroke="#8BA888"
+        strokeWidth="7"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.18 }}
+        transition={{ duration: 2.6, ease: "easeInOut", delay: 0.2 }}
+      />
+      {/* Layer 2 — mint, medium — draws second */}
+      <motion.path
+        {...common}
+        stroke="#B5EAD7"
+        strokeWidth="3.5"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.38 }}
+        transition={{ duration: 2.9, ease: "easeInOut", delay: 0.45 }}
+      />
+      {/* Layer 3 — lavender, thin, clearest — draws last */}
+      <motion.path
+        {...common}
+        stroke="#B8A9C9"
+        strokeWidth="1.8"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.60 }}
+        transition={{ duration: 3.2, ease: "easeInOut", delay: 0.7 }}
+      />
+    </svg>
+  )
+}
+
 function WaveDivider({ flip = false, topColor, bottomColor }: { flip?: boolean; topColor: string; bottomColor: string }) {
   return (
     <div style={{ lineHeight: 0, background: topColor, transform: flip ? "scaleY(-1)" : "none" }}>
@@ -345,6 +417,9 @@ export default function LandingPage() {
         background: `linear-gradient(160deg, #FFF0F2 0%, #E8F8F2 35%, #F4F1FF 65%, #FFFBEB 100%)`,
         padding: "110px 24px 0", position: "relative", overflow: "hidden",
       }}>
+        {/* ── Animated brushstroke frame ── */}
+        <HeroFrame />
+
         {/* Brushstroke background */}
         <Brushstroke style={{ top: "18%", right: "-4%", width: "55%", opacity: 1 }} />
         <Brushstroke style={{ bottom: "22%", left: "-6%", width: "40%", transform: "scaleX(-1) rotate(12deg)", opacity: 0.7 }} />
