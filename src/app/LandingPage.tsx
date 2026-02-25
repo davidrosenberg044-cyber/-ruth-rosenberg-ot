@@ -5,10 +5,10 @@ import { motion, useInView } from "framer-motion"
 
 /* ═══════════════════════════════════════════════════════
    רות רוזנברג — קליניקה לריפוי בעיסוק
-   Design: Soft pastels, nature tones, child-friendly,
-   warm & authentic — NOT corporate. No emojis.
+   Design: Painterly / hand-drawn — SVG brushstrokes,
+   Caveat handwriting font, wave dividers, organic shapes.
+   No emojis. Inline styles only.
    ═══════════════════════════════════════════════════════ */
-
 
 const C = {
   name: "רות רוזנברג",
@@ -29,6 +29,7 @@ const C = {
       border: "#B5EAD7",
       title: "טיפול סנסורי",
       desc: "עבודה על עיבוד חושי — מגע, תנועה, שיווי משקל. עוזר לילדים שמרגישים מוצפים או שמחפשים גירויים.",
+      iconKey: "wave",
     },
     {
       dot: "#FFDDE1",
@@ -36,6 +37,7 @@ const C = {
       border: "#FFDDE1",
       title: "מוטוריקה עדינה",
       desc: "חיזוק שרירי כף היד, שיפור כתיבה, גזירה ומיומנויות יומיומיות — דרך משחק ויצירה.",
+      iconKey: "star",
     },
     {
       dot: "#FFF1C1",
@@ -43,6 +45,7 @@ const C = {
       border: "#FFF1C1",
       title: "קשב וריכוז",
       desc: "כלים מעשיים לשיפור יכולת הקשב, ארגון והתמודדות עם משימות — בבית ובכיתה.",
+      iconKey: "circle",
     },
     {
       dot: "#E4DEFF",
@@ -50,6 +53,7 @@ const C = {
       border: "#E4DEFF",
       title: "מוטוריקה גסה",
       desc: "שיפור תנועה, קואורדינציה ותכנון מוטורי — דרך פעילויות תנועתיות מהנות.",
+      iconKey: "arrow",
     },
     {
       dot: "#A8C8D8",
@@ -57,6 +61,7 @@ const C = {
       border: "#A8C8D8",
       title: "התפתחות כללית",
       desc: "הערכה וטיפול בעיכובים התפתחותיים — הבנת הצרכים הייחודיים של כל ילד.",
+      iconKey: "heart",
     },
     {
       dot: "#B8A9C9",
@@ -64,6 +69,7 @@ const C = {
       border: "#B8A9C9",
       title: "הדרכת הורים",
       desc: "כלים מעשיים להורים — איך להמשיך את העבודה בבית, בטבעיות ובלי לחץ.",
+      iconKey: "house",
     },
   ],
   about: {
@@ -76,26 +82,21 @@ const C = {
       "קליניקה חמה ומאובזרת בציוד מקצועי",
     ],
   },
-  testimonials: [
-    { text: "תוך חודש וחצי ראינו שינוי משמעותי בכתיבה. הילד שלי סוף סוף רוצה לצייר!", name: "מ., אמא לבן 5" },
-    { text: "רות פשוט מבינה ילדים. הבת שלי ממש מחכה לטיפול כל שבוע.", name: "ש., אמא לבת 6" },
-    { text: "ההדרכה שקיבלנו כהורים שינתה לנו את הבית. פתאום הבנו מה הילד צריך.", name: "י., אבא לבן 4" },
-  ],
   tips: [
     {
-      label: "התפתחות",
-      title: "3 סימנים שכדאי לשים לב אליהם",
-      desc: "ילדים מתפתחים בקצב שלהם — אבל יש תחנות דרך שחשוב להכיר.",
+      label: "וויסות",
+      title: "וויסות רגשי — איך מתחילים",
+      desc: "כלים פרקטיים לעזור לילד לזהות ולנהל את הרגשות שלו, בשגרה ובמצבי לחץ.",
     },
     {
-      label: "טיפ מעשי",
-      title: "איך לעזור לילד להתרכז בבית",
-      desc: "שינויים קטנים בסביבה יכולים לעשות הבדל גדול ביכולת הקשב היומיומית.",
+      label: "הרגלים",
+      title: "רכישת הרגלים בגיל הרך",
+      desc: "כיצד בונים שגרות יציבות שמחזקות עצמאות ובטחון — בלי כפייה ובלי מאבקי כוח.",
     },
     {
-      label: "ריפוי בעיסוק",
-      title: "מה זה בכלל ריפוי בעיסוק?",
-      desc: "הרבה הורים שואלים — ריפוי בעיסוק זה לא רק כתיבה. הנה מה שחשוב לדעת.",
+      label: "עצמאות",
+      title: "לתת לילד להוביל",
+      desc: "למה ״להרפות\" ולאפשר לילד לנסות בעצמו — זו אחת ההשקעות הטובות ביותר בהתפתחות.",
     },
   ],
   formServices: [
@@ -108,7 +109,7 @@ const C = {
   ],
 }
 
-// ── Colors — Soft pastels, nature tones ──
+// ── Colors ──
 const clr = {
   sage: "#8BA888",
   sageDark: "#6B8B69",
@@ -145,13 +146,113 @@ const fadeUp = {
     transition: { delay: i * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   }),
 }
-
 const scaleIn = {
   hidden: { opacity: 0, scale: 0.93 },
   visible: (i: number = 0) => ({
     opacity: 1, scale: 1,
     transition: { delay: i * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] },
   }),
+}
+
+// ── SVG Decorative Components ──
+
+function Brushstroke({ style }: { style?: React.CSSProperties }) {
+  return (
+    <svg viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg"
+      style={{ position: "absolute", pointerEvents: "none", ...style }}>
+      <path
+        d="M10 55 C 60 20, 120 70, 200 45 C 280 20, 340 60, 410 38"
+        stroke={clr.sage} strokeWidth="38" strokeLinecap="round"
+        strokeLinejoin="round" opacity="0.10"
+      />
+      <path
+        d="M30 62 C 90 30, 160 65, 230 48 C 300 30, 360 55, 400 44"
+        stroke={clr.mint} strokeWidth="16" strokeLinecap="round"
+        strokeLinejoin="round" opacity="0.07"
+      />
+    </svg>
+  )
+}
+
+function StarDoodle({ size = 36, color = clr.lavender, style }: { size?: number; color?: string; style?: React.CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 36 36" fill="none"
+      xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", pointerEvents: "none", ...style }}>
+      <path
+        d="M18 4 L20.2 13.8 L30 12 L22.5 19.2 L26 29 L18 23.4 L10 29 L13.5 19.2 L6 12 L15.8 13.8 Z"
+        stroke={color} strokeWidth="1.5" fill="none" opacity="0.55"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+function CircleDoodle({ size = 44, color = clr.sage, style }: { size?: number; color?: string; style?: React.CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 44 44" fill="none"
+      xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", pointerEvents: "none", ...style }}>
+      <ellipse cx="22" cy="22" rx="18" ry="16" stroke={color} strokeWidth="1.5"
+        strokeDasharray="4 3" opacity="0.45" transform="rotate(-10 22 22)" />
+    </svg>
+  )
+}
+
+function WaveDivider({ flip = false, topColor, bottomColor }: { flip?: boolean; topColor: string; bottomColor: string }) {
+  return (
+    <div style={{ lineHeight: 0, background: topColor, transform: flip ? "scaleY(-1)" : "none" }}>
+      <svg viewBox="0 0 1440 54" xmlns="http://www.w3.org/2000/svg"
+        style={{ display: "block", width: "100%" }} preserveAspectRatio="none">
+        <path
+          d="M0 27 C 180 54, 360 0, 540 27 C 720 54, 900 0, 1080 27 C 1260 54, 1380 10, 1440 27 L1440 54 L0 54 Z"
+          fill={bottomColor}
+        />
+      </svg>
+    </div>
+  )
+}
+
+// ── Hand-drawn SVG icons per service ──
+const ServiceIcons: Record<string, React.ReactNode> = {
+  wave: (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M4 18 C8 10, 14 26, 18 18 C22 10, 28 26, 32 18"
+        stroke={clr.sage} strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <path d="M4 26 C8 18, 14 34, 18 26 C22 18, 28 34, 32 26"
+        stroke={clr.mint} strokeWidth="1.4" strokeLinecap="round" fill="none" opacity="0.5" />
+    </svg>
+  ),
+  star: (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M18 5 L20.5 14 L30 13 L23 19.5 L26 29 L18 24 L10 29 L13 19.5 L6 13 L15.5 14 Z"
+        stroke="#E8829A" strokeWidth="1.8" strokeLinejoin="round" fill="none" />
+    </svg>
+  ),
+  circle: (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <ellipse cx="18" cy="18" rx="12" ry="11" stroke={clr.butter} strokeWidth="2"
+        strokeDasharray="5 3" transform="rotate(-8 18 18)" />
+      <circle cx="18" cy="18" r="4" fill={clr.butter} opacity="0.5" />
+    </svg>
+  ),
+  arrow: (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M8 22 C12 14, 20 10, 28 14" stroke={clr.lavender} strokeWidth="2.2" strokeLinecap="round" fill="none" />
+      <path d="M23 9 L28 14 L22 17" stroke={clr.lavender} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </svg>
+  ),
+  heart: (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M18 28 C18 28, 6 20, 6 13 C6 9, 9 7, 12 7 C14.5 7, 16.5 8.5, 18 10.5 C19.5 8.5, 21.5 7, 24 7 C27 7, 30 9, 30 13 C30 20, 18 28, 18 28 Z"
+        stroke={clr.sky} strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+    </svg>
+  ),
+  house: (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <path d="M6 18 L18 8 L30 18" stroke={clr.lavender} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      <rect x="10" y="18" width="16" height="12" rx="2" stroke={clr.lavender} strokeWidth="1.8" fill="none" />
+      <rect x="15" y="23" width="6" height="7" rx="1" stroke={clr.lavender} strokeWidth="1.4" fill="none" />
+    </svg>
+  ),
 }
 
 function Section({ children, id, style }: { children: React.ReactNode; id?: string; style?: React.CSSProperties }) {
@@ -188,7 +289,6 @@ export default function LandingPage() {
     e.preventDefault()
     if (!formData.name || !formData.phone) return alert("נא למלא שם וטלפון")
     try {
-      // TODO: webhook URL
       // @ts-ignore
       if (typeof window !== "undefined" && window.fbq) { // @ts-ignore
         window.fbq("track", "Lead")
@@ -201,9 +301,6 @@ export default function LandingPage() {
 
   return (
     <div dir="rtl" style={{ fontFamily: "'Heebo', system-ui, sans-serif", color: clr.textDark, background: clr.warmWhite, overflowX: "hidden" }}>
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Secular+One&display=swap');
-      `}</style>
 
       {/* ════════ HEADER ════════ */}
       <motion.header
@@ -218,10 +315,12 @@ export default function LandingPage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 10,
-            background: `linear-gradient(135deg, ${clr.sage}, ${clr.mint})`,
-          }} />
+          {/* Hand-drawn logo mark */}
+          <svg width="34" height="34" viewBox="0 0 34 34" fill="none">
+            <ellipse cx="17" cy="17" rx="13" ry="12" stroke={clr.sage} strokeWidth="2"
+              strokeDasharray="6 3" transform="rotate(-6 17 17)" />
+            <circle cx="17" cy="17" r="5" fill={clr.mint} opacity="0.7" />
+          </svg>
           <div>
             <span style={{ fontSize: 14, fontWeight: 600, color: clr.textDark }}>{C.name}</span>
             <span style={{ fontSize: 11, color: clr.textMuted, display: "block", marginTop: -2 }}>{C.title}</span>
@@ -244,30 +343,41 @@ export default function LandingPage() {
       <section style={{
         minHeight: "100vh", display: "flex", alignItems: "center",
         background: `linear-gradient(160deg, #FFF0F2 0%, #E8F8F2 35%, #F4F1FF 65%, #FFFBEB 100%)`,
-        padding: "110px 24px 80px", position: "relative", overflow: "hidden",
+        padding: "110px 24px 0", position: "relative", overflow: "hidden",
       }}>
-        {/* Soft decorative shapes */}
+        {/* Brushstroke background */}
+        <Brushstroke style={{ top: "18%", right: "-4%", width: "55%", opacity: 1 }} />
+        <Brushstroke style={{ bottom: "22%", left: "-6%", width: "40%", transform: "scaleX(-1) rotate(12deg)", opacity: 0.7 }} />
+
+        {/* Doodle decorations */}
+        <StarDoodle size={40} color={clr.lavender} style={{ top: "22%", left: "8%", transform: "rotate(-15deg)" }} />
+        <StarDoodle size={28} color={clr.sage} style={{ top: "65%", right: "12%", transform: "rotate(20deg)" }} />
+        <CircleDoodle size={56} color={clr.blush} style={{ bottom: "18%", left: "28%", opacity: 0.6 }} />
+        <CircleDoodle size={38} color={clr.butter} style={{ top: "30%", right: "30%", opacity: 0.5 }} />
+
+        {/* Soft blobs */}
         <div style={{ position: "absolute", top: "8%", right: "-8%", width: 450, height: 450, borderRadius: "50%", background: `${clr.lilacLight}80` }} />
         <div style={{ position: "absolute", bottom: "5%", left: "-6%", width: 350, height: 350, borderRadius: "50%", background: `${clr.mintLight}80` }} />
-        <div style={{ position: "absolute", top: "40%", left: "15%", width: 200, height: 200, borderRadius: "50%", background: `${clr.blushLight}60` }} />
 
-        <Wrap style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: 60, alignItems: "center", position: "relative", zIndex: 2 }}>
+        <Wrap style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: 60, alignItems: "center", position: "relative", zIndex: 2, paddingBottom: 80 }}>
           <div>
+            {/* Badge — sticker style */}
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "7px 18px", borderRadius: 20,
-                background: `${clr.sage}12`, border: `1px solid ${clr.sage}25`,
+                padding: "7px 18px", borderRadius: "40% 60% 55% 45% / 50% 50% 60% 40%",
+                background: `${clr.sage}14`, border: `1.5px solid ${clr.sage}30`,
                 fontSize: 12, color: clr.sageDark, marginBottom: 24,
               }}>
               {C.heroLabel}
             </motion.div>
 
+            {/* Tagline — Caveat handwriting font */}
             <motion.h1 initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.7 }}
               style={{
-                fontFamily: "'Secular One', 'Heebo', sans-serif",
-                fontSize: "clamp(2.2rem, 4vw, 3.2rem)",
-                fontWeight: 400, lineHeight: 1.25, margin: "0 0 20px 0",
+                fontFamily: "'Caveat', 'Secular One', sans-serif",
+                fontSize: "clamp(2.6rem, 5vw, 4rem)",
+                fontWeight: 700, lineHeight: 1.2, margin: "0 0 20px 0",
                 color: clr.textDark, whiteSpace: "pre-line",
               }}>
               {C.tagline}
@@ -280,17 +390,25 @@ export default function LandingPage() {
 
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
               style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <button onClick={() => scrollTo("contact")} style={{
-                background: clr.sage, color: clr.white, border: "none",
-                padding: "13px 32px", borderRadius: 24, fontSize: 15,
-                fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
-                boxShadow: `0 4px 16px ${clr.sage}30`, transition: "all 0.3s",
-              }}
-                onMouseOver={(e) => (e.currentTarget.style.background = clr.sageDark)}
-                onMouseOut={(e) => (e.currentTarget.style.background = clr.sage)}
-              >
-                {C.ctaText}
-              </button>
+              <div style={{ position: "relative", display: "inline-block" }}>
+                <button onClick={() => scrollTo("contact")} style={{
+                  background: clr.sage, color: clr.white, border: "none",
+                  padding: "13px 32px", borderRadius: 24, fontSize: 15,
+                  fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
+                  boxShadow: `0 4px 16px ${clr.sage}30`, transition: "all 0.3s",
+                  position: "relative", zIndex: 1,
+                }}
+                  onMouseOver={(e) => (e.currentTarget.style.background = clr.sageDark)}
+                  onMouseOut={(e) => (e.currentTarget.style.background = clr.sage)}
+                >
+                  {C.ctaText}
+                </button>
+                {/* Wavy underline SVG */}
+                <svg viewBox="0 0 160 10" style={{ position: "absolute", bottom: -10, right: 16, width: 130, pointerEvents: "none" }}>
+                  <path d="M0 5 C20 1, 40 9, 60 5 C80 1, 100 9, 120 5 C135 2, 148 7, 160 5"
+                    stroke={clr.sage} strokeWidth="2.2" fill="none" strokeLinecap="round" opacity="0.45" />
+                </svg>
+              </div>
               <a href={`https://wa.me/${C.whatsapp}?text=${encodeURIComponent("היי, אשמח לשמוע עוד על הקליניקה")}`}
                 target="_blank" rel="noopener noreferrer"
                 style={{
@@ -305,59 +423,76 @@ export default function LandingPage() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.5 }}
-              style={{ marginTop: 32, display: "flex", gap: 20, fontSize: 12, color: clr.textLight }}>
+              style={{ marginTop: 36, display: "flex", gap: 20, fontSize: 12, color: clr.textLight }}>
               {["טיפול בגישה טבעית", "תכנית אישית לכל ילד", "הדרכת הורים"].map((t) => (
                 <span key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ color: clr.sage }}>✓</span> {t}
+                  <span style={{ color: clr.sage, fontSize: 14 }}>✓</span> {t}
                 </span>
               ))}
             </motion.div>
           </div>
 
-          {/* Portrait */}
+          {/* Portrait — organic shape */}
           <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5, duration: 0.8 }}
             style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-            <div style={{
-              width: "85%", maxWidth: 320, aspectRatio: "3/4",
-              borderRadius: 24, overflow: "hidden",
-              background: `linear-gradient(135deg, ${clr.mintLight}, ${clr.lilacLight})`,
-              boxShadow: `0 16px 40px ${clr.sage}15`,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              color: clr.textLight, fontSize: 13,
-            }}>
-              {/* Replace with: <img src={C.portrait} alt="רות בטיפול" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> */}
-              תמונת רות
+            <div style={{ position: "relative" }}>
+              {/* Decorative ring behind portrait */}
+              <div style={{
+                position: "absolute", inset: -12,
+                borderRadius: "60% 40% 55% 45% / 45% 55% 40% 60%",
+                border: `2px dashed ${clr.sage}30`,
+              }} />
+              <div style={{
+                width: 280, maxWidth: "90%", aspectRatio: "3/4",
+                borderRadius: "60% 40% 55% 45% / 45% 55% 40% 60%",
+                overflow: "hidden",
+                background: `linear-gradient(135deg, ${clr.mintLight}, ${clr.lilacLight})`,
+                boxShadow: `0 16px 40px ${clr.sage}20`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                color: clr.textLight, fontSize: 13,
+              }}>
+                {/* Replace with: <img src={C.portrait} alt="רות בטיפול" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> */}
+                תמונת רות
+              </div>
             </div>
             <span style={{ fontSize: 12, color: clr.textLight, fontStyle: "italic" }}>באמצע מפגש — כי זה מה שמשנה</span>
           </motion.div>
         </Wrap>
       </section>
 
+      {/* ── WAVE DIVIDER: hero → services ── */}
+      <WaveDivider topColor={`linear-gradient(160deg, #FFF0F2 0%, #FFFBEB 100%)`} bottomColor={clr.white} />
+
       {/* ════════ SERVICES ════════ */}
-      <Section id="services" style={{ background: clr.white }}>
+      <Section id="services" style={{ background: clr.white, position: "relative", overflow: "hidden" }}>
+        {/* Faint doodles in background */}
+        <StarDoodle size={52} color={clr.butter} style={{ top: 30, left: 40, opacity: 0.4 }} />
+        <CircleDoodle size={70} color={clr.mint} style={{ bottom: 40, right: 50, opacity: 0.3 }} />
+
         <Wrap>
           <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: 50 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: clr.sage, letterSpacing: "0.06em" }}>תחומי טיפול</span>
-            <h2 style={{ fontFamily: "'Secular One', sans-serif", fontSize: "clamp(1.7rem, 3vw, 2.4rem)", fontWeight: 400, color: clr.textDark, margin: "10px 0 0 0" }}>
+            <h2 style={{
+              fontFamily: "'Caveat', 'Secular One', sans-serif",
+              fontSize: "clamp(1.9rem, 3.5vw, 2.8rem)",
+              fontWeight: 700, color: clr.textDark, margin: "8px 0 0 0",
+            }}>
               איך אני יכולה לעזור?
             </h2>
           </motion.div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
             {C.services.map((s, i) => (
-              <motion.div key={i} variants={scaleIn} custom={i} whileHover={{ y: -4 }}
+              <motion.div key={i} variants={scaleIn} custom={i} whileHover={{ y: -5, boxShadow: `0 8px 24px ${s.dot}60` }}
                 style={{
                   padding: "30px 24px", borderRadius: 20,
                   background: s.bg,
-                  border: `1px solid ${s.border}`,
+                  border: `1.5px solid ${s.border}`,
                   transition: "all 0.3s",
                 }}>
-                {/* Colored dot instead of emoji */}
-                <div style={{
-                  width: 36, height: 36, borderRadius: "50%",
-                  background: s.dot,
-                  marginBottom: 16,
-                }} />
-                <h3 style={{ fontSize: 17, fontWeight: 600, color: clr.textDark, margin: "0 0 8px 0" }}>{s.title}</h3>
+                <div style={{ marginBottom: 14 }}>
+                  {ServiceIcons[s.iconKey]}
+                </div>
+                <h3 style={{ fontSize: 16, fontWeight: 600, color: clr.textDark, margin: "0 0 8px 0" }}>{s.title}</h3>
                 <p style={{ fontSize: 13.5, lineHeight: 1.7, color: clr.textMuted, margin: 0 }}>{s.desc}</p>
               </motion.div>
             ))}
@@ -365,12 +500,22 @@ export default function LandingPage() {
         </Wrap>
       </Section>
 
+      {/* ── WAVE DIVIDER: services → about ── */}
+      <WaveDivider topColor={clr.white} bottomColor={clr.cream} />
+
       {/* ════════ ABOUT ════════ */}
-      <Section id="about" style={{ background: clr.cream }}>
-        <Wrap style={{ maxWidth: 760, textAlign: "center" }}>
+      <Section id="about" style={{ background: clr.cream, position: "relative", overflow: "hidden" }}>
+        <Brushstroke style={{ top: "10%", left: "-5%", width: "50%", opacity: 0.6, transform: "rotate(-6deg) scaleX(-1)" }} />
+        <StarDoodle size={32} color={clr.lavender} style={{ top: 60, right: 80 }} />
+
+        <Wrap style={{ maxWidth: 760, textAlign: "center", position: "relative", zIndex: 2 }}>
           <motion.div variants={fadeUp}>
             <span style={{ fontSize: 12, fontWeight: 600, color: clr.lavender, letterSpacing: "0.06em" }}>קצת עליי</span>
-            <h2 style={{ fontFamily: "'Secular One', sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 400, color: clr.textDark, margin: "10px 0 20px 0" }}>
+            <h2 style={{
+              fontFamily: "'Caveat', 'Secular One', sans-serif",
+              fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
+              fontWeight: 700, color: clr.textDark, margin: "8px 0 20px 0",
+            }}>
               {C.about.headline}
             </h2>
             <p style={{ fontSize: 16, lineHeight: 1.85, color: clr.textMuted, margin: "0 0 30px 0" }}>
@@ -398,39 +543,86 @@ export default function LandingPage() {
         </Wrap>
       </Section>
 
-      {/* ════════ TESTIMONIALS ════════ */}
-      <Section style={{ background: clr.white }}>
-        <Wrap>
+      {/* ── WAVE DIVIDER: about → testimonials (coming soon) ── */}
+      <WaveDivider topColor={clr.cream} bottomColor={clr.white} />
+
+      {/* ════════ TESTIMONIALS — COMING SOON ════════ */}
+      <Section style={{ background: clr.white, position: "relative", overflow: "hidden" }}>
+        <CircleDoodle size={90} color={clr.mint} style={{ top: 20, left: 60, opacity: 0.25 }} />
+        <StarDoodle size={44} color={clr.blush} style={{ bottom: 30, right: 80, opacity: 0.4 }} />
+
+        <Wrap style={{ position: "relative", zIndex: 2 }}>
           <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: 40 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: clr.sky, letterSpacing: "0.06em" }}>מה אומרים ההורים</span>
-            <h2 style={{ fontFamily: "'Secular One', sans-serif", fontSize: "clamp(1.5rem, 2.5vw, 2rem)", fontWeight: 400, color: clr.textDark, margin: "10px 0 0 0" }}>
+            <h2 style={{
+              fontFamily: "'Caveat', 'Secular One', sans-serif",
+              fontSize: "clamp(1.7rem, 3vw, 2.4rem)",
+              fontWeight: 700, color: clr.textDark, margin: "8px 0 0 0",
+            }}>
               קולות מהקליניקה
             </h2>
           </motion.div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-            {C.testimonials.map((t, i) => (
+            {[
+              { icon: "wave", bg: clr.mintLight, border: clr.mint, text: "עדויות מהורים יתווספו עם פתיחת הקליניקה", sub: "הקליניקה בדרך — בקרוב!" },
+              { icon: "heart", bg: clr.blushLight, border: clr.blush, text: "רוצים להיות בין הראשונים? השאירו פרטים ונחזור אליכם.", sub: "משפחות ראשונות — בקדימות" },
+              { icon: "star", bg: clr.butterLight, border: clr.butter, text: "כל ילד הוא עולם שלם. נחכה לשמוע על הילד שלכם.", sub: "שיחת היכרות ללא עלות" },
+            ].map((card, i) => (
               <motion.div key={i} variants={scaleIn} custom={i}
                 style={{
-                  padding: "28px 24px", borderRadius: 20,
-                  background: i === 1 ? clr.mintLight : clr.cream,
-                  border: `1px solid ${clr.border}`,
+                  padding: "36px 28px", borderRadius: 24,
+                  background: card.bg, border: `1.5px solid ${card.border}`,
+                  textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
                 }}>
-                <p style={{ fontSize: 14.5, lineHeight: 1.75, color: clr.textDark, margin: "0 0 16px 0", fontStyle: "italic" }}>
-                  ״{t.text}״
+                <div style={{ marginBottom: 4 }}>
+                  {ServiceIcons[card.icon]}
+                </div>
+                <p style={{ fontSize: 14.5, lineHeight: 1.75, color: clr.textDark, margin: 0 }}>
+                  {card.text}
                 </p>
-                <span style={{ fontSize: 12, color: clr.textLight }}>{t.name}</span>
+                <span style={{
+                  display: "inline-block", padding: "5px 14px", borderRadius: 20,
+                  background: clr.white, fontSize: 11.5, color: clr.textMuted,
+                  fontWeight: 500, border: `1px solid ${clr.border}`,
+                }}>
+                  {card.sub}
+                </span>
               </motion.div>
             ))}
           </div>
+          {/* CTA beneath */}
+          <motion.div variants={fadeUp} custom={4} style={{ textAlign: "center", marginTop: 36 }}>
+            <button onClick={() => scrollTo("contact")} style={{
+              background: "transparent", color: clr.sageDark, border: `2px solid ${clr.sage}`,
+              padding: "11px 30px", borderRadius: 24, fontSize: 14,
+              fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
+              transition: "all 0.3s",
+            }}
+              onMouseOver={(e) => { e.currentTarget.style.background = clr.sage; e.currentTarget.style.color = clr.white }}
+              onMouseOut={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = clr.sageDark }}
+            >
+              להיות בין הראשונים
+            </button>
+          </motion.div>
         </Wrap>
       </Section>
 
+      {/* ── WAVE DIVIDER: testimonials → tips ── */}
+      <WaveDivider topColor={clr.white} bottomColor={clr.cream} />
+
       {/* ════════ TIPS ════════ */}
-      <Section id="tips" style={{ background: clr.cream }}>
-        <Wrap>
+      <Section id="tips" style={{ background: clr.cream, position: "relative", overflow: "hidden" }}>
+        <Brushstroke style={{ bottom: "5%", right: "-8%", width: "45%", opacity: 0.55, transform: "rotate(8deg)" }} />
+        <CircleDoodle size={48} color={clr.lavender} style={{ top: 40, left: 100, opacity: 0.35 }} />
+
+        <Wrap style={{ position: "relative", zIndex: 2 }}>
           <motion.div variants={fadeUp} style={{ textAlign: "center", marginBottom: 48 }}>
             <span style={{ fontSize: 12, fontWeight: 600, color: clr.lavender, letterSpacing: "0.06em" }}>מהקליניקה</span>
-            <h2 style={{ fontFamily: "'Secular One', sans-serif", fontSize: "clamp(1.5rem, 2.5vw, 2rem)", fontWeight: 400, color: clr.textDark, margin: "10px 0 0 0" }}>
+            <h2 style={{
+              fontFamily: "'Caveat', 'Secular One', sans-serif",
+              fontSize: "clamp(1.7rem, 3vw, 2.4rem)",
+              fontWeight: 700, color: clr.textDark, margin: "8px 0 0 0",
+            }}>
               טיפים ומאמרים
             </h2>
           </motion.div>
@@ -444,18 +636,28 @@ export default function LandingPage() {
                   transition: "all 0.3s", cursor: "default",
                 }}>
                 <span style={{
-                  fontSize: 11, fontWeight: 600, color: clr.sage,
-                  letterSpacing: "0.06em", textTransform: "uppercase",
+                  fontSize: 11, fontWeight: 700, color: clr.sage,
+                  letterSpacing: "0.08em", textTransform: "uppercase",
                 }}>
                   {tip.label}
                 </span>
-                <h3 style={{ fontSize: 16, fontWeight: 600, color: clr.textDark, margin: 0, lineHeight: 1.4 }}>
+                <h3 style={{
+                  fontFamily: "'Caveat', sans-serif",
+                  fontSize: 20, fontWeight: 700, color: clr.textDark, margin: 0, lineHeight: 1.3,
+                }}>
                   {tip.title}
                 </h3>
                 <p style={{ fontSize: 13.5, lineHeight: 1.7, color: clr.textMuted, margin: 0 }}>
                   {tip.desc}
                 </p>
-                <span style={{ fontSize: 12, color: clr.sage, marginTop: 4, fontWeight: 500 }}>
+                <span style={{
+                  fontSize: 12, color: clr.sage, marginTop: 4, fontWeight: 500,
+                  display: "flex", alignItems: "center", gap: 5,
+                }}>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <circle cx="7" cy="7" r="5.5" stroke={clr.sage} strokeWidth="1.3" />
+                    <path d="M7 4.5 V7 L8.5 8.5" stroke={clr.sage} strokeWidth="1.3" strokeLinecap="round" />
+                  </svg>
                   בקרוב
                 </span>
               </motion.div>
@@ -464,13 +666,23 @@ export default function LandingPage() {
         </Wrap>
       </Section>
 
+      {/* ── WAVE DIVIDER: tips → contact ── */}
+      <WaveDivider topColor={clr.cream} bottomColor={clr.white} />
+
       {/* ════════ CONTACT ════════ */}
-      <Section id="contact" style={{ background: clr.white }}>
-        <Wrap>
+      <Section id="contact" style={{ background: clr.white, position: "relative", overflow: "hidden" }}>
+        <StarDoodle size={36} color={clr.sage} style={{ top: 40, left: 60, opacity: 0.35 }} />
+        <CircleDoodle size={60} color={clr.blush} style={{ bottom: 50, right: 60, opacity: 0.3 }} />
+
+        <Wrap style={{ position: "relative", zIndex: 2 }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 50, alignItems: "start" }}>
             <motion.div variants={fadeUp}>
               <span style={{ fontSize: 12, fontWeight: 600, color: clr.sage, letterSpacing: "0.06em" }}>יצירת קשר</span>
-              <h2 style={{ fontFamily: "'Secular One', sans-serif", fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 400, color: clr.textDark, margin: "10px 0 16px 0" }}>
+              <h2 style={{
+                fontFamily: "'Caveat', 'Secular One', sans-serif",
+                fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
+                fontWeight: 700, color: clr.textDark, margin: "8px 0 16px 0",
+              }}>
                 בואו נדבר על הילד שלכם.
               </h2>
               <p style={{ fontSize: 15, lineHeight: 1.7, color: clr.textMuted, margin: "0 0 32px 0" }}>
@@ -478,12 +690,20 @@ export default function LandingPage() {
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[
-                  { icon: "📞", label: C.phone },
-                  { icon: "✉️", label: C.email },
-                  { icon: "📍", label: C.address },
-                ].map(({ icon, label }) => (
+                  { label: C.phone, iconPath: "M6 2C4.9 2 4 2.9 4 4v1C4 11.6 9.4 17 16 17h1c1.1 0 2-.9 2-2v-2.5c0-.4-.2-.7-.5-.9l-3-1.5c-.4-.2-.9-.1-1.2.2L13 11.5C11.5 10.8 10.2 9.5 9.5 8l1.2-1.3c.3-.3.4-.8.2-1.2L9.4 2.5C9.2 2.2 8.9 2 8.5 2H6z" },
+                  { label: C.email, iconPath: "M3 5a1 1 0 011-1h12a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V5zm2 1v.5l5 3.5 5-3.5V6H5zm0 2.5V14h10V8.5l-5 3.5-5-3.5z" },
+                  { label: C.address, iconPath: "M9 2C6.24 2 4 4.24 4 7c0 3.75 5 11 5 11s5-7.25 5-11c0-2.76-2.24-5-5-5zm0 6.5C8.17 8.5 7.5 7.83 7.5 7S8.17 5.5 9 5.5 10.5 6.17 10.5 7 9.83 8.5 9 8.5z" },
+                ].map(({ label, iconPath }) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 12, background: clr.cream, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, border: `1px solid ${clr.border}` }}>{icon}</div>
+                    <div style={{
+                      width: 40, height: 40, borderRadius: 12,
+                      background: `${clr.sage}12`, border: `1px solid ${clr.sage}25`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path d={iconPath} fill={clr.sage} />
+                      </svg>
+                    </div>
                     <span style={{ fontSize: 14, color: clr.textDark }}>{label}</span>
                   </div>
                 ))}
@@ -492,8 +712,10 @@ export default function LandingPage() {
 
             <motion.div variants={fadeUp} custom={1}>
               {sent ? (
-                <div style={{ padding: 50, textAlign: "center", borderRadius: 24, background: clr.mintLight, border: `1px solid ${clr.mint}` }}>
-                  <div style={{ width: 48, height: 48, borderRadius: "50%", background: clr.mint, margin: "0 auto 16px" }} />
+                <div style={{ padding: 50, textAlign: "center", borderRadius: 24, background: clr.mintLight, border: `1.5px solid ${clr.mint}` }}>
+                  <div style={{ marginBottom: 16, display: "flex", justifyContent: "center" }}>
+                    {ServiceIcons["heart"]}
+                  </div>
                   <h3 style={{ fontSize: 20, fontWeight: 600, color: clr.textDark, margin: "0 0 8px 0" }}>תודה! הפרטים נשלחו.</h3>
                   <p style={{ color: clr.textMuted, fontSize: 14 }}>אחזור אליכם בהקדם.</p>
                 </div>
@@ -579,7 +801,8 @@ export default function LandingPage() {
             gap: 24px !important;
           }
           section { padding: 60px 18px !important; }
-          h1 { font-size: 1.9rem !important; }
+          h1 { font-size: 2.2rem !important; }
+          h2 { font-size: 1.8rem !important; }
         }
       `}</style>
     </div>
