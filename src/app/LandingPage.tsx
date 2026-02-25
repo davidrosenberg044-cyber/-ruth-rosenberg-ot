@@ -198,12 +198,13 @@ function CircleDoodle({ size = 44, color = clr.sage, style }: { size?: number; c
 }
 
 /* ── Animated brushstroke frame around the entire Hero ──
-   Uses Framer Motion pathLength: 0→1 (handles dasharray/dashoffset).
-   3 layered paths — sage (thick/back), mint (mid), lavender (thin/front).
-   The path is intentionally hand-drawn: each edge has a slight curve
-   so it looks painted, not geometric. viewBox matches 1400×960 aspect. */
+   4 layered paths drawn in sequence:
+   1. peach  — the "body" of the brush, thick + visible (the main star)
+   2. sage   — adds earthy depth behind the peach
+   3. mint   — delicate shimmer on top
+   4. lavender — fine leading edge, drawn last
+   ease [0.25,0.1,0.25,1] = slow start, accelerate, slow finish = brush feel. */
 function HeroFrame() {
-  // Organic hand-drawn closed path — slight wobble on each edge
   const d = [
     "M 55,45",
     "C 280,22  700,18  980,28",
@@ -225,6 +226,8 @@ function HeroFrame() {
     strokeLinejoin: "round" as const,
   }
 
+  const brushEase: [number, number, number, number] = [0.25, 0.1, 0.25, 1]
+
   return (
     <svg
       viewBox="0 0 1400 960"
@@ -238,32 +241,68 @@ function HeroFrame() {
         zIndex: 1,
       }}
     >
-      {/* Layer 1 — sage, thick, faint — draws first */}
+      {/* ★ Layer 0 — PEACH — the prominent brush body, draws first */}
+      <motion.path
+        {...common}
+        stroke="#E8D0C0"
+        strokeWidth="14"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.58 }}
+        transition={{ duration: 2.2, ease: brushEase, delay: 0.1 }}
+      />
+      {/* Layer 1 — sage, earthy depth */}
       <motion.path
         {...common}
         stroke="#8BA888"
         strokeWidth="7"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.18 }}
-        transition={{ duration: 2.6, ease: "easeInOut", delay: 0.2 }}
+        animate={{ pathLength: 1, opacity: 0.30 }}
+        transition={{ duration: 2.5, ease: brushEase, delay: 0.5 }}
       />
-      {/* Layer 2 — mint, medium — draws second */}
+      {/* Layer 2 — mint, shimmer */}
       <motion.path
         {...common}
         stroke="#B5EAD7"
         strokeWidth="3.5"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.38 }}
-        transition={{ duration: 2.9, ease: "easeInOut", delay: 0.45 }}
+        animate={{ pathLength: 1, opacity: 0.42 }}
+        transition={{ duration: 2.8, ease: brushEase, delay: 0.8 }}
       />
-      {/* Layer 3 — lavender, thin, clearest — draws last */}
+      {/* Layer 3 — lavender, fine leading edge drawn last */}
       <motion.path
         {...common}
         stroke="#B8A9C9"
-        strokeWidth="1.8"
+        strokeWidth="1.6"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.60 }}
-        transition={{ duration: 3.2, ease: "easeInOut", delay: 0.7 }}
+        animate={{ pathLength: 1, opacity: 0.72 }}
+        transition={{ duration: 3.1, ease: brushEase, delay: 1.1 }}
+      />
+    </svg>
+  )
+}
+
+/* ── AnimatedBrushstroke — replaces static Brushstroke in Hero ──
+   Two motion.path per stroke: thick peach body + thin sage edge,
+   drawing left-to-right with a gentle easeOut. */
+function AnimatedBrushstroke({ style, delay = 0 }: { style?: React.CSSProperties; delay?: number }) {
+  return (
+    <svg viewBox="0 0 420 90" fill="none"
+      style={{ position: "absolute", pointerEvents: "none", ...style }}>
+      {/* Wide peach body — the visible brushstroke */}
+      <motion.path
+        d="M10 55 C 60 20, 120 70, 200 45 C 280 20, 340 60, 410 38"
+        stroke="#E8D0C0" strokeWidth="38" strokeLinecap="round" fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.28 }}
+        transition={{ duration: 1.8, ease: "easeOut", delay }}
+      />
+      {/* Thin sage edge — painted on top for texture */}
+      <motion.path
+        d="M30 52 C 90 28, 160 62, 230 46 C 300 28, 360 52, 400 42"
+        stroke="#8BA888" strokeWidth="9" strokeLinecap="round" fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{ pathLength: 1, opacity: 0.32 }}
+        transition={{ duration: 2.0, ease: "easeOut", delay: delay + 0.3 }}
       />
     </svg>
   )
@@ -420,15 +459,46 @@ export default function LandingPage() {
         {/* ── Animated brushstroke frame ── */}
         <HeroFrame />
 
-        {/* Brushstroke background */}
-        <Brushstroke style={{ top: "18%", right: "-4%", width: "55%", opacity: 1 }} />
-        <Brushstroke style={{ bottom: "22%", left: "-6%", width: "40%", transform: "scaleX(-1) rotate(12deg)", opacity: 0.7 }} />
+        {/* ── Animated brushstrokes (replace static ones) ── */}
+        <AnimatedBrushstroke style={{ top: "18%", right: "-4%", width: "55%" }} delay={1.2} />
+        <AnimatedBrushstroke style={{ bottom: "22%", left: "-6%", width: "40%", transform: "scaleX(-1) rotate(12deg)" }} delay={1.6} />
 
-        {/* Doodle decorations */}
-        <StarDoodle size={40} color={clr.lavender} style={{ top: "22%", left: "8%", transform: "rotate(-15deg)" }} />
-        <StarDoodle size={28} color={clr.sage} style={{ top: "65%", right: "12%", transform: "rotate(20deg)" }} />
-        <CircleDoodle size={56} color={clr.blush} style={{ bottom: "18%", left: "28%", opacity: 0.6 }} />
-        <CircleDoodle size={38} color={clr.butter} style={{ top: "30%", right: "30%", opacity: 0.5 }} />
+        {/* ── Doodle decorations — animated, appear after frame finishes ── */}
+        <motion.div
+          style={{ position: "absolute", top: "22%", left: "8%", pointerEvents: "none" }}
+          initial={{ opacity: 0, scale: 0.4, rotate: -28 }}
+          animate={{ opacity: 1, scale: 1, rotate: -15 }}
+          transition={{ duration: 1.1, ease: [0.34, 1.56, 0.64, 1], delay: 2.0 }}
+        >
+          <StarDoodle size={40} color={clr.lavender} style={{}} />
+        </motion.div>
+
+        <motion.div
+          style={{ position: "absolute", top: "65%", right: "12%", pointerEvents: "none" }}
+          initial={{ opacity: 0, scale: 0.4, rotate: 5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 20 }}
+          transition={{ duration: 1.1, ease: [0.34, 1.56, 0.64, 1], delay: 2.4 }}
+        >
+          <StarDoodle size={28} color={clr.sage} style={{}} />
+        </motion.div>
+
+        <motion.div
+          style={{ position: "absolute", bottom: "18%", left: "28%", pointerEvents: "none" }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 0.6, scale: 1 }}
+          transition={{ duration: 1.0, ease: "easeOut", delay: 2.2 }}
+        >
+          <CircleDoodle size={56} color={clr.blush} style={{}} />
+        </motion.div>
+
+        <motion.div
+          style={{ position: "absolute", top: "30%", right: "30%", pointerEvents: "none" }}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 0.5, scale: 1 }}
+          transition={{ duration: 1.0, ease: "easeOut", delay: 2.6 }}
+        >
+          <CircleDoodle size={38} color={clr.butter} style={{}} />
+        </motion.div>
 
         {/* Soft blobs */}
         <div style={{ position: "absolute", top: "8%", right: "-8%", width: 450, height: 450, borderRadius: "50%", background: `${clr.lilacLight}80` }} />
