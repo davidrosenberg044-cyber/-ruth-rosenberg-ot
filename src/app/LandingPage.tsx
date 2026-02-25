@@ -9,6 +9,7 @@ import { motion, useInView } from "framer-motion"
    warm & authentic — NOT corporate. No emojis.
    ═══════════════════════════════════════════════════════ */
 
+
 const C = {
   name: "רות רוזנברג",
   title: "קליניקה לריפוי בעיסוק",
