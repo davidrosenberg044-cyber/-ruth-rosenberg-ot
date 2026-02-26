@@ -13,8 +13,8 @@ import { motion, useInView } from "framer-motion"
 const C = {
   name: "רות רוזנברג",
   title: "קליניקה לריפוי בעיסוק",
-  tagline: "לגדול בקצב שלהם.\nבדרך שלהם.",
-  subtitle: "ריפוי בעיסוק התפתחותי לילדים — בגישה טבעית, חמה ומקצועית. כי כל ילד מתפתח בדרך הייחודית שלו.",
+  tagline: "הילד שלך יכול לפרוח —\nצריך רק את הסביבה הנכונה.",
+  subtitle: "כל הורה יודע שהילד שלו מסוגל יותר ממה שנדמה לפעמים. ריפוי בעיסוק מעשי, חם ומותאם — בשביל שהילד שלך ירגיש מסוגל, שמח ועצמאי.",
   heroLabel: "ריפוי בעיסוק | התפתחות הילד | טיפול סנסורי",
   phone: "050-0000000",
   whatsapp: "972500000000",
@@ -193,6 +193,58 @@ function CircleDoodle({ size = 44, color = clr.sage, strokeWidth = 1.5, opacity 
       xmlns="http://www.w3.org/2000/svg" style={{ display: "block", ...style }}>
       <ellipse cx="22" cy="22" rx="18" ry="16" stroke={color} strokeWidth={strokeWidth}
         strokeDasharray="4 3" opacity={opacity} transform="rotate(-10 22 22)" />
+    </svg>
+  )
+}
+
+/* ── GenerativeWaves — soft animated SVG waves in Hero bottom ──
+   3 overlapping wave layers, each with its own palette colour + timing.
+   Very subtle (low opacity) — atmosphere, not distraction. */
+function GenerativeWaves() {
+  return (
+    <svg
+      viewBox="0 0 1440 560"
+      style={{
+        position: "absolute", bottom: 0, left: 0,
+        width: "100%", height: "60%",
+        pointerEvents: "none", zIndex: 0,
+      }}
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+      {/* Blush wave — front, slowest */}
+      <motion.path
+        d="M0 280 C240 180,480 380,720 280 C960 180,1200 380,1440 280 L1440 560 L0 560 Z"
+        fill="#FFDDE120"
+        animate={{ d: [
+          "M0 280 C240 180,480 380,720 280 C960 180,1200 380,1440 280 L1440 560 L0 560 Z",
+          "M0 320 C240 240,480 340,720 300 C960 260,1200 340,1440 320 L1440 560 L0 560 Z",
+          "M0 280 C240 180,480 380,720 280 C960 180,1200 380,1440 280 L1440 560 L0 560 Z",
+        ] as any}}
+        transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+      />
+      {/* Lavender wave — mid */}
+      <motion.path
+        d="M0 340 C360 260,720 420,1080 340 C1260 300,1380 360,1440 340 L1440 560 L0 560 Z"
+        fill="#E8E0F518"
+        animate={{ d: [
+          "M0 340 C360 260,720 420,1080 340 C1260 300,1380 360,1440 340 L1440 560 L0 560 Z",
+          "M0 360 C360 300,720 400,1080 360 C1260 320,1380 380,1440 360 L1440 560 L0 560 Z",
+          "M0 340 C360 260,720 420,1080 340 C1260 300,1380 360,1440 340 L1440 560 L0 560 Z",
+        ] as any}}
+        transition={{ repeat: Infinity, duration: 8, ease: "easeInOut", delay: 1 }}
+      />
+      {/* Butter wave — back, fastest */}
+      <motion.path
+        d="M0 400 C480 340,960 460,1440 400 L1440 560 L0 560 Z"
+        fill="#FFF3C020"
+        animate={{ d: [
+          "M0 400 C480 340,960 460,1440 400 L1440 560 L0 560 Z",
+          "M0 380 C480 360,960 440,1440 380 L1440 560 L0 560 Z",
+          "M0 400 C480 340,960 460,1440 400 L1440 560 L0 560 Z",
+        ] as any}}
+        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut", delay: 2 }}
+      />
     </svg>
   )
 }
@@ -425,12 +477,15 @@ export default function LandingPage() {
             <span style={{ fontSize: 11, color: clr.textMuted, display: "block", marginTop: -2 }}>{C.title}</span>
           </div>
         </div>
-        <button onClick={() => scrollTo("contact")} style={{
-          background: clr.sage, color: clr.white, border: "none",
-          padding: "9px 22px", borderRadius: 20, fontSize: 13,
-          fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
-          transition: "background 0.2s",
-        }}
+        <button
+          onClick={() => scrollTo("contact")}
+          aria-label="לקביעת פגישת היכרות — גלילה לטופס יצירת קשר"
+          style={{
+            background: clr.sage, color: clr.white, border: "none",
+            padding: "9px 22px", borderRadius: 20, fontSize: 13,
+            fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
+            transition: "background 0.2s",
+          }}
           onMouseOver={(e) => (e.currentTarget.style.background = clr.sageDark)}
           onMouseOut={(e) => (e.currentTarget.style.background = clr.sage)}
         >
@@ -446,6 +501,9 @@ export default function LandingPage() {
       }}>
         {/* ── Animated brushstroke frame ── */}
         <HeroFrame />
+
+        {/* ── Generative wave background (bottom of Hero) ── */}
+        <GenerativeWaves />
 
         {/* ── Animated brushstrokes (replace static ones) ── */}
         <AnimatedBrushstroke style={{ top: "18%", right: "-4%", width: "55%" }} delay={1.2} />
@@ -527,14 +585,27 @@ export default function LandingPage() {
 
             <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
               style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <div style={{ position: "relative", display: "inline-block" }}>
-                <button onClick={() => scrollTo("contact")} style={{
-                  background: clr.sage, color: clr.white, border: "none",
-                  padding: "13px 32px", borderRadius: 24, fontSize: 15,
-                  fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
-                  boxShadow: `0 4px 16px ${clr.sage}30`, transition: "all 0.3s",
-                  position: "relative", zIndex: 1,
+              <motion.div
+                animate={{
+                  boxShadow: [
+                    `0 4px 16px ${clr.sage}28`,
+                    `0 4px 30px ${clr.sage}55`,
+                    `0 4px 16px ${clr.sage}28`,
+                  ],
                 }}
+                transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
+                style={{ position: "relative", display: "inline-block", borderRadius: 24 }}
+              >
+                <button
+                  onClick={() => scrollTo("contact")}
+                  aria-label="לקביעת פגישת היכרות — גלילה לטופס יצירת קשר"
+                  style={{
+                    background: clr.sage, color: clr.white, border: "none",
+                    padding: "13px 32px", borderRadius: 24, fontSize: 15,
+                    fontWeight: 500, cursor: "pointer", fontFamily: "inherit",
+                    transition: "all 0.3s",
+                    position: "relative", zIndex: 1,
+                  }}
                   onMouseOver={(e) => (e.currentTarget.style.background = clr.sageDark)}
                   onMouseOut={(e) => (e.currentTarget.style.background = clr.sage)}
                 >
@@ -545,7 +616,7 @@ export default function LandingPage() {
                   <path d="M0 5 C20 1, 40 9, 60 5 C80 1, 100 9, 120 5 C135 2, 148 7, 160 5"
                     stroke={clr.peach} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.70" />
                 </svg>
-              </div>
+              </motion.div>
               <a href={`https://wa.me/${C.whatsapp}?text=${encodeURIComponent("היי, אשמח לשמוע עוד על הקליניקה")}`}
                 target="_blank" rel="noopener noreferrer"
                 style={{
@@ -562,9 +633,9 @@ export default function LandingPage() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.5 }}
               style={{ marginTop: 36, display: "flex", gap: 20, fontSize: 12, color: clr.textLight }}>
               {[
-                { text: "טיפול בגישה טבעית", color: "#FF9BB5" },
-                { text: "תכנית אישית לכל ילד", color: "#E8B84B" },
-                { text: "הדרכת הורים", color: "#9B84C8" },
+                { text: "טיפול שמתאים לילד שלך — לא תבנית", color: "#FF9BB5" },
+                { text: "הורים שותפים בכל שלב", color: "#E8B84B" },
+                { text: "שיחת היכרות ראשונה — ללא עלות", color: "#9B84C8" },
               ].map(({ text, color }) => (
                 <span key={text} style={{ display: "flex", alignItems: "center", gap: 5 }}>
                   <span style={{ color, fontSize: 14, fontWeight: 700 }}>✓</span> {text}
@@ -872,8 +943,8 @@ export default function LandingPage() {
                     { name: "phone", label: "טלפון", type: "tel", ph: "050-0000000" },
                   ].map(({ name, label, type, ph }) => (
                     <div key={name}>
-                      <label style={{ display: "block", fontSize: 12, fontWeight: 500, color: clr.textDark, marginBottom: 5 }}>{label}</label>
-                      <input type={type} placeholder={ph} value={formData[name as keyof typeof formData]}
+                      <label htmlFor={`field-${name}`} style={{ display: "block", fontSize: 12, fontWeight: 500, color: clr.textDark, marginBottom: 5 }}>{label}</label>
+                      <input id={`field-${name}`} type={type} placeholder={ph} value={formData[name as keyof typeof formData]}
                         onChange={(e) => setFormData((p) => ({ ...p, [name]: e.target.value }))}
                         style={{
                           width: "100%", padding: "12px 14px", borderRadius: 12,
@@ -886,8 +957,8 @@ export default function LandingPage() {
                     </div>
                   ))}
                   <div>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 500, color: clr.textDark, marginBottom: 5 }}>נושא הפנייה</label>
-                    <select value={formData.service} onChange={(e) => setFormData((p) => ({ ...p, service: e.target.value }))}
+                    <label htmlFor="field-service" style={{ display: "block", fontSize: 12, fontWeight: 500, color: clr.textDark, marginBottom: 5 }}>נושא הפנייה</label>
+                    <select id="field-service" value={formData.service} onChange={(e) => setFormData((p) => ({ ...p, service: e.target.value }))}
                       style={{ width: "100%", padding: "12px 14px", borderRadius: 12, border: `1.5px solid ${clr.border}`, background: clr.white, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box", cursor: "pointer" }}>
                       <option value="">בחרו נושא</option>
                       {C.formServices.map((s) => <option key={s} value={s}>{s}</option>)}
@@ -919,7 +990,10 @@ export default function LandingPage() {
       </footer>
 
       {/* ════════ FLOATING WHATSAPP ════════ */}
-      <motion.a href={`https://wa.me/${C.whatsapp}`} target="_blank" rel="noopener noreferrer"
+      <motion.a
+        href={`https://wa.me/${C.whatsapp}`}
+        target="_blank" rel="noopener noreferrer"
+        aria-label="פתח שיחת WhatsApp עם רות רוזנברג"
         initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 2, type: "spring" }}
         whileHover={{ scale: 1.1 }}
         style={{
