@@ -174,36 +174,33 @@ function Brushstroke({ style }: { style?: React.CSSProperties }) {
   )
 }
 
-function StarDoodle({ size = 36, color = clr.lavender, style }: { size?: number; color?: string; style?: React.CSSProperties }) {
+function StarDoodle({ size = 36, color = clr.lavender, strokeWidth = 1.5, opacity = 0.55, style }: { size?: number; color?: string; strokeWidth?: number; opacity?: number; style?: React.CSSProperties }) {
   return (
     <svg width={size} height={size} viewBox="0 0 36 36" fill="none"
-      xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", pointerEvents: "none", ...style }}>
+      xmlns="http://www.w3.org/2000/svg" style={{ display: "block", ...style }}>
       <path
         d="M18 4 L20.2 13.8 L30 12 L22.5 19.2 L26 29 L18 23.4 L10 29 L13.5 19.2 L6 12 L15.8 13.8 Z"
-        stroke={color} strokeWidth="1.5" fill="none" opacity="0.55"
+        stroke={color} strokeWidth={strokeWidth} fill="none" opacity={opacity}
         strokeLinejoin="round"
       />
     </svg>
   )
 }
 
-function CircleDoodle({ size = 44, color = clr.sage, style }: { size?: number; color?: string; style?: React.CSSProperties }) {
+function CircleDoodle({ size = 44, color = clr.sage, strokeWidth = 1.5, opacity = 0.45, style }: { size?: number; color?: string; strokeWidth?: number; opacity?: number; style?: React.CSSProperties }) {
   return (
     <svg width={size} height={size} viewBox="0 0 44 44" fill="none"
-      xmlns="http://www.w3.org/2000/svg" style={{ position: "absolute", pointerEvents: "none", ...style }}>
-      <ellipse cx="22" cy="22" rx="18" ry="16" stroke={color} strokeWidth="1.5"
-        strokeDasharray="4 3" opacity="0.45" transform="rotate(-10 22 22)" />
+      xmlns="http://www.w3.org/2000/svg" style={{ display: "block", ...style }}>
+      <ellipse cx="22" cy="22" rx="18" ry="16" stroke={color} strokeWidth={strokeWidth}
+        strokeDasharray="4 3" opacity={opacity} transform="rotate(-10 22 22)" />
     </svg>
   )
 }
 
-/* ── Animated brushstroke frame around the entire Hero ──
-   4 layered paths drawn in sequence:
-   1. peach  — the "body" of the brush, thick + visible (the main star)
-   2. sage   — adds earthy depth behind the peach
-   3. mint   — delicate shimmer on top
-   4. lavender — fine leading edge, drawn last
-   ease [0.25,0.1,0.25,1] = slow start, accelerate, slow finish = brush feel. */
+/* ── HeroFrame — animated brushstroke border around the entire Hero ──
+   3 layers, drawn in sequence. Sage removed — peach+blush+lavender
+   give warmth + colour variety without the "all green" problem.
+   strokeWidth 22 on peach = real paintbrush feel on any screen size. */
 function HeroFrame() {
   const d = [
     "M 55,45",
@@ -241,67 +238,58 @@ function HeroFrame() {
         zIndex: 1,
       }}
     >
-      {/* ★ Layer 0 — PEACH — the prominent brush body, draws first */}
+      {/* Layer 0 — PEACH body — thick, visible, warm — THE main brushstroke */}
       <motion.path
         {...common}
         stroke="#E8D0C0"
-        strokeWidth="14"
+        strokeWidth="22"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.58 }}
+        animate={{ pathLength: 1, opacity: 0.70 }}
         transition={{ duration: 2.2, ease: brushEase, delay: 0.1 }}
       />
-      {/* Layer 1 — sage, earthy depth */}
+      {/* Layer 1 — BLUSH edge — pinkish warmth over the peach body */}
       <motion.path
         {...common}
-        stroke="#8BA888"
-        strokeWidth="7"
+        stroke="#FFDDE1"
+        strokeWidth="10"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.30 }}
-        transition={{ duration: 2.5, ease: brushEase, delay: 0.5 }}
+        animate={{ pathLength: 1, opacity: 0.55 }}
+        transition={{ duration: 2.6, ease: brushEase, delay: 0.6 }}
       />
-      {/* Layer 2 — mint, shimmer */}
-      <motion.path
-        {...common}
-        stroke="#B5EAD7"
-        strokeWidth="3.5"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.42 }}
-        transition={{ duration: 2.8, ease: brushEase, delay: 0.8 }}
-      />
-      {/* Layer 3 — lavender, fine leading edge drawn last */}
+      {/* Layer 2 — LAVENDER fine edge — the crisp leading line, drawn last */}
       <motion.path
         {...common}
         stroke="#B8A9C9"
-        strokeWidth="1.6"
+        strokeWidth="3"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.72 }}
-        transition={{ duration: 3.1, ease: brushEase, delay: 1.1 }}
+        animate={{ pathLength: 1, opacity: 0.80 }}
+        transition={{ duration: 3.0, ease: brushEase, delay: 1.1 }}
       />
     </svg>
   )
 }
 
-/* ── AnimatedBrushstroke — replaces static Brushstroke in Hero ──
-   Two motion.path per stroke: thick peach body + thin sage edge,
-   drawing left-to-right with a gentle easeOut. */
+/* ── AnimatedBrushstroke — large background paint strokes in Hero ──
+   peach body (wide, warm) + blush edge (rosy, lively).
+   Sage removed — no more "all green". */
 function AnimatedBrushstroke({ style, delay = 0 }: { style?: React.CSSProperties; delay?: number }) {
   return (
     <svg viewBox="0 0 420 90" fill="none"
       style={{ position: "absolute", pointerEvents: "none", ...style }}>
-      {/* Wide peach body — the visible brushstroke */}
+      {/* Wide peach body */}
       <motion.path
         d="M10 55 C 60 20, 120 70, 200 45 C 280 20, 340 60, 410 38"
         stroke="#E8D0C0" strokeWidth="38" strokeLinecap="round" fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.28 }}
+        animate={{ pathLength: 1, opacity: 0.38 }}
         transition={{ duration: 1.8, ease: "easeOut", delay }}
       />
-      {/* Thin sage edge — painted on top for texture */}
+      {/* Blush edge — rosy warmth over the peach */}
       <motion.path
         d="M30 52 C 90 28, 160 62, 230 46 C 300 28, 360 52, 400 42"
-        stroke="#8BA888" strokeWidth="9" strokeLinecap="round" fill="none"
+        stroke="#FFDDE1" strokeWidth="12" strokeLinecap="round" fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
-        animate={{ pathLength: 1, opacity: 0.32 }}
+        animate={{ pathLength: 1, opacity: 0.45 }}
         transition={{ duration: 2.0, ease: "easeOut", delay: delay + 0.3 }}
       />
     </svg>
@@ -453,7 +441,7 @@ export default function LandingPage() {
       {/* ════════ HERO ════════ */}
       <section style={{
         minHeight: "100vh", display: "flex", alignItems: "center",
-        background: `linear-gradient(160deg, #FFF0F2 0%, #E8F8F2 35%, #F4F1FF 65%, #FFFBEB 100%)`,
+        background: `linear-gradient(160deg, #FFE4E8 0%, #D4EDE6 35%, #E8E0F5 65%, #FFF3C0 100%)`,
         padding: "110px 24px 0", position: "relative", overflow: "hidden",
       }}>
         {/* ── Animated brushstroke frame ── */}
@@ -463,41 +451,45 @@ export default function LandingPage() {
         <AnimatedBrushstroke style={{ top: "18%", right: "-4%", width: "55%" }} delay={1.2} />
         <AnimatedBrushstroke style={{ bottom: "22%", left: "-6%", width: "40%", transform: "scaleX(-1) rotate(12deg)" }} delay={1.6} />
 
-        {/* ── Doodle decorations — animated, appear after frame finishes ── */}
+        {/* ── Doodle decorations — large, vivid, colourful ── */}
+        {/* Star left — blush-pink, big */}
         <motion.div
-          style={{ position: "absolute", top: "22%", left: "8%", pointerEvents: "none" }}
+          style={{ position: "absolute", top: "20%", left: "6%", pointerEvents: "none" }}
           initial={{ opacity: 0, scale: 0.4, rotate: -28 }}
           animate={{ opacity: 1, scale: 1, rotate: -15 }}
           transition={{ duration: 1.1, ease: [0.34, 1.56, 0.64, 1], delay: 2.0 }}
         >
-          <StarDoodle size={40} color={clr.lavender} style={{}} />
+          <StarDoodle size={64} color="#FF9BB5" strokeWidth={2.5} opacity={0.75} />
         </motion.div>
 
+        {/* Star right — butter-gold */}
         <motion.div
-          style={{ position: "absolute", top: "65%", right: "12%", pointerEvents: "none" }}
+          style={{ position: "absolute", top: "62%", right: "10%", pointerEvents: "none" }}
           initial={{ opacity: 0, scale: 0.4, rotate: 5 }}
           animate={{ opacity: 1, scale: 1, rotate: 20 }}
           transition={{ duration: 1.1, ease: [0.34, 1.56, 0.64, 1], delay: 2.4 }}
         >
-          <StarDoodle size={28} color={clr.sage} style={{}} />
+          <StarDoodle size={44} color="#E8B84B" strokeWidth={2.0} opacity={0.70} />
         </motion.div>
 
+        {/* Circle left — lavender, large */}
         <motion.div
-          style={{ position: "absolute", bottom: "18%", left: "28%", pointerEvents: "none" }}
+          style={{ position: "absolute", bottom: "15%", left: "22%", pointerEvents: "none" }}
           initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 0.6, scale: 1 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.0, ease: "easeOut", delay: 2.2 }}
         >
-          <CircleDoodle size={56} color={clr.blush} style={{}} />
+          <CircleDoodle size={80} color="#9B84C8" strokeWidth={2.2} opacity={0.55} />
         </motion.div>
 
+        {/* Circle right — sky blue */}
         <motion.div
-          style={{ position: "absolute", top: "30%", right: "30%", pointerEvents: "none" }}
+          style={{ position: "absolute", top: "28%", right: "28%", pointerEvents: "none" }}
           initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 0.5, scale: 1 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.0, ease: "easeOut", delay: 2.6 }}
         >
-          <CircleDoodle size={38} color={clr.butter} style={{}} />
+          <CircleDoodle size={50} color="#6BAED4" strokeWidth={2.0} opacity={0.60} />
         </motion.div>
 
         {/* Soft blobs */}
@@ -511,8 +503,8 @@ export default function LandingPage() {
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 padding: "7px 18px", borderRadius: "40% 60% 55% 45% / 50% 50% 60% 40%",
-                background: `${clr.sage}14`, border: `1.5px solid ${clr.sage}30`,
-                fontSize: 12, color: clr.sageDark, marginBottom: 24,
+                background: "#FFF0F2", border: `1.5px solid #FFDDE1`,
+                fontSize: 12, color: "#C06080", marginBottom: 24,
               }}>
               {C.heroLabel}
             </motion.div>
@@ -551,7 +543,7 @@ export default function LandingPage() {
                 {/* Wavy underline SVG */}
                 <svg viewBox="0 0 160 10" style={{ position: "absolute", bottom: -10, right: 16, width: 130, pointerEvents: "none" }}>
                   <path d="M0 5 C20 1, 40 9, 60 5 C80 1, 100 9, 120 5 C135 2, 148 7, 160 5"
-                    stroke={clr.sage} strokeWidth="2.2" fill="none" strokeLinecap="round" opacity="0.45" />
+                    stroke={clr.peach} strokeWidth="2.5" fill="none" strokeLinecap="round" opacity="0.70" />
                 </svg>
               </div>
               <a href={`https://wa.me/${C.whatsapp}?text=${encodeURIComponent("היי, אשמח לשמוע עוד על הקליניקה")}`}
@@ -569,9 +561,13 @@ export default function LandingPage() {
 
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 0.5 }}
               style={{ marginTop: 36, display: "flex", gap: 20, fontSize: 12, color: clr.textLight }}>
-              {["טיפול בגישה טבעית", "תכנית אישית לכל ילד", "הדרכת הורים"].map((t) => (
-                <span key={t} style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ color: clr.sage, fontSize: 14 }}>✓</span> {t}
+              {[
+                { text: "טיפול בגישה טבעית", color: "#FF9BB5" },
+                { text: "תכנית אישית לכל ילד", color: "#E8B84B" },
+                { text: "הדרכת הורים", color: "#9B84C8" },
+              ].map(({ text, color }) => (
+                <span key={text} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                  <span style={{ color, fontSize: 14, fontWeight: 700 }}>✓</span> {text}
                 </span>
               ))}
             </motion.div>
